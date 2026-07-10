@@ -13,10 +13,12 @@ public final class HeartToHeart extends JavaPlugin {
         dataManager = new PlayerDataManager(this);
 
         getServer().getPluginManager().registerEvents(new GameListener(dataManager), this);
+        getServer().getPluginManager().registerEvents(new NoCommsListener(this), this);
 
         H2HCommand command = new H2HCommand(dataManager);
         Objects.requireNonNull(getCommand("h2h")).setExecutor(command);
         Objects.requireNonNull(getCommand("h2h")).setTabCompleter(command);
+        Objects.requireNonNull(getCommand("broadcast")).setExecutor(new BroadcastCommand());
     }
 
     @Override
