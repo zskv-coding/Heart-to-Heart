@@ -2,12 +2,15 @@ package com.zskv.heartToHeart;
 
 import org.bukkit.GameMode;
 import org.bukkit.Location;
+import org.bukkit.attribute.Attribute;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
+
+import java.util.Objects;
 
 public class GameListener implements Listener {
 
@@ -33,6 +36,8 @@ public class GameListener implements Listener {
     public void onDeath(PlayerDeathEvent event) {
         Player player = event.getEntity();
         PlayerData data = dataManager.get(player.getUniqueId());
+
+        event.deathMessage(null);
 
         if (!data.isAlive()) {
             return;
@@ -63,7 +68,7 @@ public class GameListener implements Listener {
         }
 
         HealthUtil.applyHearts(player, data.getHearts());
-        player.setHealth(player.getAttribute(org.bukkit.attribute.Attribute.MAX_HEALTH).getValue());
+        player.setHealth(Objects.requireNonNull(player.getAttribute(Attribute.MAX_HEALTH)).getValue());
     }
 }
 

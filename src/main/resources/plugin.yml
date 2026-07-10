@@ -7,6 +7,9 @@ commands:
   h2h:
     description: Manage and view Hearts To Hearts player status
     permission: heart2heart.admin
+  broadcast:
+    description: Allows admins to bypass the chat mute by broadcasting.
+    permission: heart2heart.admin
 
 permissions:
   heart2heart.admin:
