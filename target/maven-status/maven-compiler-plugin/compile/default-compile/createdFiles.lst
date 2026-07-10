@@ -1,4 +1,5 @@
 com\zskv\heartToHeart\NoCommsListener.class
+com\zskv\heartToHeart\SessionManager.class
 com\zskv\heartToHeart\PlayerData.class
 com\zskv\heartToHeart\EliminationBroadcastTask.class
 com\zskv\heartToHeart\H2HCommand.class

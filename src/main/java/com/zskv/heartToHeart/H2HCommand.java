@@ -9,7 +9,7 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
-
+import com.zskv.heartToHeart.SessionManager;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -19,9 +19,11 @@ import java.util.stream.Collectors;
 public class H2HCommand implements CommandExecutor, TabCompleter {
 
     private final PlayerDataManager dataManager;
+    private final SessionManager sessionManager;
 
-    public H2HCommand(PlayerDataManager dataManager) {
+    public H2HCommand(PlayerDataManager dataManager, SessionManager sessionManager) {
         this.dataManager = dataManager;
+        this.sessionManager = sessionManager;
     }
 
     @Override
@@ -52,6 +54,27 @@ public class H2HCommand implements CommandExecutor, TabCompleter {
                 return true;
             }
             setHearts(sender, args[2], args[3]);
+            return true;
+        }
+
+        if (args [0].equalsIgnoreCase("session") && args.length >=2) {
+            if (args[1].equalsIgnoreCase("start")) {
+                if (sessionManager.isActive()) {
+                    sender.sendMessage(ChatColor.RED + "A session is already running");
+                } else {
+                    sessionManager.start();
+                    sender.sendMessage(ChatColor.GREEN + "Session started.");
+                }
+            } else if (args[1].equalsIgnoreCase("stop")) {
+                if (!sessionManager.isActive()) {
+                    sender.sendMessage(ChatColor.RED + "No session is currently running.");
+                } else {
+                    sessionManager.stop();
+                    sender.sendMessage(ChatColor.RED + "Session stopped.");
+                }
+            } else {
+                sender.sendMessage(ChatColor.RED + "Usage: /h2h session <start|stop>");
+            }
             return true;
         }
 
@@ -138,7 +161,7 @@ public class H2HCommand implements CommandExecutor, TabCompleter {
     @Override
     public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
         if (args.length == 1) {
-            return filter(List.of("status", "hearts", "seriesstart"), args[0]);
+            return filter(List.of("status", "hearts", "seriesstart", "session"), args[0]);
         }
 
         if (args.length == 2 && args[0].equalsIgnoreCase("status")) {
@@ -155,6 +178,10 @@ public class H2HCommand implements CommandExecutor, TabCompleter {
         if (args.length == 3 && args[0].equalsIgnoreCase("hearts") && args[1].equalsIgnoreCase("set")) {
             List<String> options = Bukkit.getOnlinePlayers().stream().map(Player::getName).collect(Collectors.toList());
             return filter(options, args[2]);
+        }
+
+        if (args.length == 2 && args[0].equalsIgnoreCase("session")) {
+            return filter(List.of( "start", "stop"), args[1]);
         }
 
         return List.of();
