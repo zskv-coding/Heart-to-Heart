@@ -1,0 +1,14 @@
+name: HeartToHeart
+version: 1.0
+main: com.zskv.heartToHeart.HeartToHeart
+api-version: '26.2'
+
+commands:
+  h2h:
+    description: Manage and view Hearts To Hearts player status
+    permission: heart2heart.admin
+
+permissions:
+  heart2heart.admin:
+    description: Allows use of Hearts To Hearts admin commands
+    default: op
